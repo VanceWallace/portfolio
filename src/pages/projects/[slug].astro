@@ -1,0 +1,76 @@
+---
+import Base from '../../layouts/Base.astro';
+import { projects, pageProjects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return pageProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const index = projects.findIndex((p) => p.slug === project.slug);
+const num = String(index + 1).padStart(2, '0');
+const pos = pageProjects.findIndex((p) => p.slug === project.slug);
+const next = pageProjects[(pos + 1) % pageProjects.length];
+const nextNum = String(projects.findIndex((p) => p.slug === next.slug) + 1).padStart(2, '0');
+const playLink = project.links[0];
+---
+<Base title={`${project.title} — Vance Wallace`} description={project.summary}>
+  <section class="wrap project-head">
+    <span class="eyebrow" style="gap: 0">Project {num} · {project.category}</span>
+    <h1>{project.title}</h1>
+    <p class="lede">{project.summary}</p>
+    {project.meta && (
+      <div class="meta-row">
+        {project.meta.map((m) => (
+          <div><span class="label">{m.label}</span><span>{m.value}</span></div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <section class="wrap" aria-label="Demo" style="padding-bottom: 80px">
+    <div class="demo">
+      <div class="demo-bar">
+        <span class="accent">● Live demo</span>
+        {project.controls && <span style="color: var(--muted)">Controls: {project.controls}</span>}
+      </div>
+      {project.embedUrl ? (
+        <iframe class="demo-frame" src={project.embedUrl} title={`${project.title} demo`} loading="lazy" allow="fullscreen; gamepad; autoplay"></iframe>
+      ) : (
+        <div class="demo-stage grid-bg">
+          <span class="mono" style="font-size: 13px; color: var(--muted)">[PLAYABLE BUILD EMBEDS HERE]</span>
+          {playLink && <a class="btn btn-solid" href={playLink.href}>Play full screen ↗</a>}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="notes">
+    <div class="wrap notes-inner">
+      {project.idea && <div><h2>The idea</h2><p>{project.idea}</p></div>}
+      {project.build && <div><h2>How I built it</h2><p>{project.build}</p></div>}
+      {project.learned && <div><h2>What I learned</h2><p>{project.learned}</p></div>}
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="link-row">
+      {project.links.map((l) => <a class="tap" href={l.href}>{l.label} ↗</a>)}
+    </div>
+    <nav class="pager" aria-label="Projects">
+      <a class="tap" href="/#projects">← All projects</a>
+      <a class="next" href={`/projects/${next.slug}/`}>
+        <span class="label">Next · {nextNum}</span>
+        <span>{next.title} →</span>
+      </a>
+    </nav>
+  </section>
+</Base>
+
+<style>
+  .project-head .eyebrow::before { display: none; }
+</style>

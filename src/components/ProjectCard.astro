@@ -1,0 +1,28 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+
+const { project, index } = Astro.props;
+const href = project.externalUrl ?? `/projects/${project.slug}/`;
+const num = String(index + 1).padStart(2, '0');
+---
+<article class="card">
+  <a href={href} class="thumb grid-bg" aria-label={`Open ${project.title}`}>
+    {project.thumbnail ? <img src={project.thumbnail} alt="" loading="lazy" /> : project.thumbnailLabel}
+  </a>
+  <div class="card-body">
+    <div class="card-meta">
+      <span class="accent">{num} · {project.category}</span>
+      <span style="color: var(--muted)">{project.status}</span>
+    </div>
+    <h3><a href={href}>{project.title}</a></h3>
+    <p>{project.summary}</p>
+    <div class="card-links">
+      {project.links.map((l) => <a class="tap" href={l.href}>{l.label} ↗</a>)}
+    </div>
+  </div>
+</article>

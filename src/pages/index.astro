@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+---
+<Base home>
+  <section id="top" class="hero grid-bg">
+    <div class="wrap hero-inner">
+      <div class="eyebrow">Senior product manager · AI · Spatial · Games</div>
+      <h1>AI-native product leader. I direct AI-assisted builds toward outcomes people actually feel.</h1>
+      <p class="lede">
+        Twenty years shipping consumer products across Meta Reality Labs, Schell Games, EA and Tagged.
+        Below is what I'm building now: small, playable things made with AI.
+      </p>
+      <div class="actions">
+        <a class="btn btn-solid" href="#projects">Try the demos</a>
+        <a class="btn btn-line" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="wrap section">
+    <div class="section-head">
+      <h2>Side projects &amp; demos</h2>
+      <span class="label">Playable in the browser</span>
+    </div>
+    <div class="cards">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="wrap about-inner">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span class="eyebrow" style="gap: 0">About</span>
+        <h2>Product sense built in games, sharpened in AI.</h2>
+      </div>
+      <div class="about-copy">
+        <p>
+          I lead the product side of AI-assisted work: framing the problem, setting the bar, and judging what the
+          build actually changes for people. My path runs from CMU's Entertainment Technology Center through games,
+          spatial computing at Meta Reality Labs, and directing AI projects at Schell Games.
+        </p>
+        <p>An improv and acting background shapes how I run rooms and read users. I mentor PMs at techcareers.io.</p>
+        <div class="facts">
+          <div><span class="label">Experience</span><span>~20 years</span></div>
+          <div><span class="label">Based in</span><span>Bethesda, MD</span></div>
+          <div><span class="label">Education</span><span>CMU · ETC</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .about .eyebrow::before { display: none; }
+</style>
