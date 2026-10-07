@@ -95,6 +95,32 @@ export const projects: Project[] = [
     build: '[How the pieces fit: specs, tests, dev server, pre-commit checks.]',
     learned: '[What it changed about how you evaluate AI-built work.]',
   },
+  {
+    slug: 'voice-agent',
+    category: 'Voice AI',
+    status: 'Live',
+    title: 'Retell AI voice agent',
+    summary: 'A conversational voice agent built on Retell AI. Talk to it right in your browser.',
+    thumbnailLabel: '[AGENT SCREENSHOT]',
+    links: [
+      {
+        label: 'Talk to the agent',
+        href: 'https://agent.retellai.com/orb/agent_e6ba52434a7fba58c25e5d91ec?token=5187646f6caecc5c15fb58bd6d465fa2',
+      },
+    ],
+    meta: [
+      { label: 'Status', value: 'Live' },
+      { label: 'Built with', value: 'Retell AI' },
+      { label: 'Platform', value: 'Web · voice' },
+      { label: 'Year', value: '2026' },
+    ],
+    embedUrl:
+      'https://agent.retellai.com/orb/agent_e6ba52434a7fba58c25e5d91ec?token=5187646f6caecc5c15fb58bd6d465fa2',
+    controls: 'Click the orb and allow your microphone',
+    idea: '[What the agent does and who it is for.]',
+    build: '[How you designed the prompt, voice and conversation flow, and how you tested it.]',
+    learned: '[One or two product lessons about designing for voice.]',
+  },
   // Hidden until the channel is ready — uncomment and add the URL to bring it back.
   // {
   //   slug: 'fox-in-the-shell',

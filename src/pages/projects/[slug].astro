@@ -39,7 +39,7 @@ const playLink = project.links[0];
         {project.controls && <span style="color: var(--muted)">Controls: {project.controls}</span>}
       </div>
       {project.embedUrl ? (
-        <iframe class="demo-frame" src={project.embedUrl} title={`${project.title} demo`} loading="lazy" allow="fullscreen; gamepad; autoplay"></iframe>
+        <iframe class="demo-frame" src={project.embedUrl} title={`${project.title} demo`} loading="lazy" allow="fullscreen; gamepad; autoplay; microphone"></iframe>
       ) : (
         <div class="demo-stage grid-bg">
           <span class="mono" style="font-size: 13px; color: var(--muted)">[PLAYABLE BUILD EMBEDS HERE]</span>
