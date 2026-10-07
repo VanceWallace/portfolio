@@ -95,16 +95,17 @@ export const projects: Project[] = [
     build: '[How the pieces fit: specs, tests, dev server, pre-commit checks.]',
     learned: '[What it changed about how you evaluate AI-built work.]',
   },
-  {
-    slug: 'fox-in-the-shell',
-    category: 'Video',
-    status: 'Ongoing',
-    title: 'Fox in the Shell',
-    summary: 'A YouTube channel documenting the AI-assisted build process, one project at a time.',
-    thumbnailLabel: '[VIDEO THUMBNAIL]',
-    externalUrl: '[YOUTUBE URL]',
-    links: [{ label: 'Watch', href: '[YOUTUBE URL]' }],
-  },
+  // Hidden until the channel is ready — uncomment and add the URL to bring it back.
+  // {
+  //   slug: 'fox-in-the-shell',
+  //   category: 'Video',
+  //   status: 'Ongoing',
+  //   title: 'Fox in the Shell',
+  //   summary: 'A YouTube channel documenting the AI-assisted build process, one project at a time.',
+  //   thumbnailLabel: '[VIDEO THUMBNAIL]',
+  //   externalUrl: '[YOUTUBE URL]',
+  //   links: [{ label: 'Watch', href: '[YOUTUBE URL]' }],
+  // },
 ];
 
 export const pageProjects = projects.filter((p) => !p.externalUrl);
