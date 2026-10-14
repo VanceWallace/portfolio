@@ -61,7 +61,7 @@ export const projects: Project[] = [
     category: 'Browser games',
     status: 'Playable',
     title: 'remix.gg games',
-    summary: 'Small games published on remix.gg, each built test-first from a written spec with Claude Code.',
+    summary: 'Small games published on remix.gg, each built from a written spec using test-driven development with Claude Code.',
     thumbnailLabel: '[GAMEPLAY GIF]',
     links: [
       { label: 'Play', href: '[REMIX.GG PROFILE URL]' },
@@ -75,7 +75,7 @@ export const projects: Project[] = [
     ],
     controls: '[CONTROLS]',
     idea: '[What these games explore, and why small and fast was the point.]',
-    build: '[How a written spec becomes a tested, published game.]',
+    build: '[How a written spec becomes a published game through test-driven development.]',
     learned: '[One or two product lessons from shipping many small games.]',
   },
   {
