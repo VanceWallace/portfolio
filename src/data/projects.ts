@@ -15,6 +15,8 @@ export interface Project {
   summary: string;
   /** Path under /public, e.g. '/projects/warp-cube.gif'. Leave empty to show a placeholder. */
   thumbnail?: string;
+  /** Path under /public to a short silent .mp4 that autoplays and loops in the card. Takes priority over thumbnail. */
+  thumbnailVideo?: string;
   thumbnailLabel: string;
   /** If set, the card links straight out instead of to a project page. */
   externalUrl?: string;
@@ -101,6 +103,8 @@ export const projects: Project[] = [
     status: 'Live',
     title: 'Retell AI voice agent',
     summary: 'A conversational voice agent built on Retell AI. Talk to it right in your browser.',
+    thumbnail: '/projects/retell-demo.jpg',
+    thumbnailVideo: '/projects/retell-demo.mp4',
     thumbnailLabel: '[AGENT SCREENSHOT]',
     links: [
       {
