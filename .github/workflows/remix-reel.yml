@@ -1,0 +1,45 @@
+name: Remix games reel
+
+# Rebuilds public/projects/remix-games.mp4 from the preview clips on
+# remix.gg/@ness whenever a game is added or its preview changes.
+on:
+  schedule:
+    - cron: "17 11 * * *"   # daily, ~7am Eastern
+  workflow_dispatch:         # "Run workflow" button for an immediate rebuild
+    inputs:
+      force:
+        description: Rebuild even if nothing changed
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: remix-reel
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Build reel
+        run: python3 scripts/remix-reel.py ${{ inputs.force && '--force' || '' }}
+
+      - name: Commit if changed
+        run: |
+          git add public/projects/remix-games.mp4 scripts/remix-reel.json
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update remix games reel"
+          git push
