@@ -149,6 +149,9 @@ def build(files, output):
             "-movflags", "+faststart", str(output)]
     output.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(cmd, check=True)
+    # Still frame shown on the site before the video loads.
+    subprocess.run(["ffmpeg", "-y", "-v", "error", "-ss", "1", "-i", str(output),
+                    "-frames:v", "1", "-q:v", "4", str(output.with_suffix(".jpg"))], check=True)
     print(f"Wrote {output.relative_to(ROOT)}: {len(files)} clips, {W}x{H}, ~{t:.1f}s, "
           f"{output.stat().st_size / 1e6:.1f} MB")
 

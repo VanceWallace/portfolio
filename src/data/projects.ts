@@ -64,7 +64,10 @@ export const projects: Project[] = [
     status: 'Playable',
     title: 'remix.gg games',
     summary: 'Small games published on remix.gg, each built from a written spec using test-driven development with Claude Code.',
-    thumbnailLabel: '[GAMEPLAY GIF]',
+    // Both files are rebuilt daily from the remix.gg previews by .github/workflows/remix-reel.yml.
+    thumbnail: '/projects/remix-games.jpg',
+    thumbnailVideo: '/projects/remix-games.mp4',
+    thumbnailLabel: '[GAMEPLAY LOOP]',
     links: [
       { label: 'Play the games', href: 'https://remix.gg/@ness' },
       { label: 'Source', href: 'https://github.com/VanceWallace' },
