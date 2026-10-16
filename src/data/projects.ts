@@ -64,7 +64,7 @@ export const projects: Project[] = [
     summary: 'Small games published on remix.gg, each built from a written spec using test-driven development with Claude Code.',
     thumbnailLabel: '[GAMEPLAY GIF]',
     links: [
-      { label: 'Play', href: 'https://remix.gg/@ness' },
+      { label: 'Play the games', href: 'https://remix.gg/@ness' },
       { label: 'Source', href: 'https://github.com/VanceWallace' },
     ],
     meta: [
