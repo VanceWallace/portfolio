@@ -101,7 +101,7 @@ export const projects: Project[] = [
     embedTall: true,
     controls: 'Tap an answer, then turn the card',
     idea:
-      'Each place is a three-sided card: find it on the map, answer why it matters to people, then see a fact and a memory trick. Getting both right earns a sticker, and an adaptive picker brings back the places a student misses more often.',
+      'Each place is a three-sided card: find it on the map, answer why it matters to people, then see a fact and a memory trick. Getting both right earns a sticker.',
     build: '[How you went from the idea to a playable prototype with Claude, and how you checked it against a sixth-grade curriculum.]',
     learned: '[One or two product lessons about designing learning games for this age group.]',
   },
