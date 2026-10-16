@@ -31,6 +31,14 @@ FPS = 30
 LONG_SIDE = 1280    # output is 1280x720 or 720x1280, matching most clips
 SHORT_SIDE = 720
 
+# Games listed here play first, in this order. Any other game with a preview
+# (e.g. one published later) follows, in the order it appears on the profile.
+ORDER = [
+    "f368fb35-b888-429e-b0ec-e6dc2fb8f15e",  # Sun Spinner
+    "9be3f900-942a-47d3-9c01-09b1829bbc94",  # Aqua Bloom
+    "c19c4781-3c48-4d7c-a43a-39202cfa74f6",  # Pour Champion
+]
+
 UA = "Mozilla/5.0 (portfolio reel builder; +https://github.com/VanceWallace/portfolio)"
 GAME_RE = re.compile(r"/games/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})")
 PREVIEW_RE = re.compile(
@@ -83,6 +91,11 @@ def find_clips(html):
 
     if not clips:
         fail(f"found {len(games)} games but no preview clips; the page layout may have changed")
+
+    def rank(url):
+        gid = PREVIEW_RE.match(url).group(1)
+        return (ORDER.index(gid), 0) if gid in ORDER else (len(ORDER), games.index(gid))
+    clips.sort(key=rank)
     return clips
 
 
