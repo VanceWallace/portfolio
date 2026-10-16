@@ -86,7 +86,7 @@ export const projects: Project[] = [
     status: 'Playable prototype',
     title: 'Map It Out',
     summary:
-      'A geography review game for sixth graders: find a place on a cartoon map, learn why it matters, and earn its sticker. It brings back the places each student keeps missing.',
+      'A geography review game for middle school students: find a place on a cartoon map, learn why it matters, and earn its sticker.',
     thumbnail: '/projects/map-it-out.jpg',
     thumbnailVideo: '/projects/map-it-out.mp4',
     thumbnailLabel: '[GAMEPLAY LOOP]',
