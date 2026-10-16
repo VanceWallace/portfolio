@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Map It Out: Geography Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ocean:#7FD0E6; --ocean-deep:#5CB8D4; --outline:#1E3A4C; --ink:#1E3A4C; --ink-soft:#4F6B7A;
+  --paper:#FFF9EC; --panel:#FFFFFF; --pin:#FF4F4F; --good:#2FA85C; --miss:#F28A1F; --river:#1C7ED6;
+  --af:#FFD43B; --as:#FF922B; --eu:#B197FC; --na:#69DB7C; --sa:#F783AC; --au:#FFA94D; --an:#F1F3F5;
+  --dim:#E6EDE4; --sand:#F5C66B; --snow:#FFFFFF; --rock:#8C6A4F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ocean:#1D5F7A; --ocean-deep:#174E66; --ink:#F1F7FA; --ink-soft:#B4CAD4;
+    --paper:#10222E; --panel:#1A3344; --dim:#3A5566;
+  }
+}
+:root[data-theme="dark"]{
+  --ocean:#1D5F7A; --ocean-deep:#174E66; --ink:#F1F7FA; --ink-soft:#B4CAD4;
+  --paper:#10222E; --panel:#1A3344; --dim:#3A5566;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);
+  font-family:"Lexend",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.5;font-size:17px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--pin);outline-offset:3px;border-radius:10px}
+
+.wrap{max-width:1140px;margin:0 auto;padding:20px 18px 40px}
+header{margin-bottom:14px}
+h1{font-weight:700;font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.015em;margin:0}
+.sub{margin:6px 0 0;color:var(--ink-soft)}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px}
+.chip{flex:none;border:2.5px solid var(--outline);background:var(--panel);border-radius:999px;padding:5px 14px;font-size:.95rem;box-shadow:0 3px 0 var(--outline)}
+.chip[aria-pressed="true"]{background:var(--outline);color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .chip{border-color:var(--ink-soft);box-shadow:0 3px 0 var(--ink-soft)}}
+
+.stage{display:grid;grid-template-columns:1.6fr 1fr;gap:20px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:1fr}}
+
+/* Cartoon map */
+.mapbox{background:var(--ocean);border:4px solid var(--outline);border-radius:26px;overflow:hidden;box-shadow:0 6px 0 var(--outline);min-width:0}
+.mapbox svg{display:block;width:100%;height:auto}
+.land{stroke:var(--outline);stroke-width:1.8px;vector-effect:non-scaling-stroke;stroke-linejoin:round;transition:fill .35s}
+.shadow{fill:var(--outline);opacity:.35}
+.ref{stroke:#fff;stroke-width:calc(.6px*var(--k));stroke-dasharray:calc(2.5px*var(--k)) calc(2px*var(--k));opacity:.55}
+.ref.on{stroke:var(--pin);stroke-width:calc(1.8px*var(--k));opacity:1;stroke-dasharray:calc(4px*var(--k)) calc(2.5px*var(--k));animation:march 1s linear infinite}
+@keyframes march{to{stroke-dashoffset:-13}}
+.river-base{fill:none;stroke:var(--outline);stroke-width:calc(4.4px*var(--k));stroke-linecap:round;stroke-linejoin:round}
+.river{fill:none;stroke:var(--river);stroke-width:calc(3px*var(--k));stroke-linecap:round;stroke-linejoin:round}
+.foam{fill:none;stroke:#fff;stroke-width:calc(.9px*var(--k));stroke-linecap:round;stroke-dasharray:calc(1.6px*var(--k)) calc(3.2px*var(--k));animation:rush .7s linear infinite}
+@keyframes rush{to{stroke-dashoffset:-9.6}}
+.wave{fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;animation:bob 1.8s ease-in-out infinite}
+.wave.b{animation-delay:-.6s}.wave.c{animation-delay:-1.2s}
+@keyframes bob{50%{transform:translateY(-1.2px)}}
+.bounce{transform-box:fill-box;transform-origin:50% 100%;animation:hop 1.6s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+.sticker circle{fill:#fff;stroke:var(--outline);stroke-width:.8}
+.sticker.pop>g{transform-box:fill-box;transform-origin:center;animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.label{font-family:"Lexend",system-ui,sans-serif;font-weight:700;font-size:7px;fill:var(--outline);paint-order:stroke;stroke:#fff;stroke-width:1.8px;stroke-linejoin:round}
+.maptag{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 16px;background:var(--panel);border-top:4px solid var(--outline);font-weight:500;font-size:.95rem}
+.maptag span{flex:1}
+.zoombtn{border:2px solid var(--outline);background:var(--panel);border-radius:999px;padding:3px 12px;font-size:.85rem;font-weight:500}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .zoombtn{border-color:var(--ink-soft)}}
+
+/* Three-sided card: a spinning prism */
+.side{min-width:0}
+.scene{perspective:1400px}
+.prism{position:relative;height:510px;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.5,.1,.3,1.15)}
+.face{position:absolute;inset:0;background:var(--panel);border:4px solid var(--outline);border-radius:26px;padding:20px;
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;gap:10px;overflow:auto}
+.steps{display:flex;gap:6px;margin-bottom:2px}
+.steps span{flex:1;height:8px;border-radius:99px;background:var(--dim)}
+.steps span.on{background:var(--outline)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .steps span.on{background:var(--ink)}}
+.kicker{font-weight:700;color:var(--ink-soft);margin:0;font-size:.95rem}
+.q{font-weight:600;font-size:1.3rem;line-height:1.3;margin:0}
+.recap{background:var(--paper);border-radius:14px;padding:8px 12px;font-size:.95rem;margin:0}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:2.5px solid var(--outline);background:var(--panel);border-radius:14px;padding:10px 14px;font-weight:500;box-shadow:0 3px 0 var(--outline)}
+.opt:active{transform:translateY(2px);box-shadow:0 1px 0 var(--outline)}
+.opt.right{background:var(--good);color:#fff}
+.opt.wrong{background:var(--miss);color:#fff}
+.opt:disabled{cursor:default}
+.fb{min-height:1.5em;font-weight:500;margin:0}
+.go{margin-top:auto;border:0;border-radius:16px;padding:14px;font-weight:700;background:var(--outline);color:#fff;font-size:1.05rem;box-shadow:0 4px 0 #0c1d27}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .go{background:#FFD43B;color:#1E3A4C}}
+.big{font-size:4.2rem;line-height:1;text-align:center;margin:4px 0}
+.fact{margin:0;font-size:1.05rem}
+.tip{background:#FFF3BF;color:#1E3A4C;border-radius:14px;padding:10px 12px;font-size:.95rem}
+.tip b{display:block}
+.score{display:flex;gap:8px;flex-wrap:wrap}
+.score span{border-radius:99px;padding:3px 12px;font-size:.9rem;font-weight:500;color:#fff}
+
+/* Sticker book / progress */
+.progress{margin-top:24px;background:var(--panel);border:4px solid var(--outline);border-radius:26px;padding:18px 20px}
+.progress h2{font-weight:700;font-size:1.35rem;margin:0 0 2px}
+.progress p{margin:0 0 12px;color:var(--ink-soft)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tile{border:2px solid var(--dim);background:var(--paper);border-radius:14px;padding:8px 10px;text-align:left;font-size:.88rem;line-height:1.25;display:flex;flex-direction:column;gap:6px}
+.tile .nm{font-weight:500}
+.bars{display:grid;grid-template-columns:auto 1fr;gap:3px 6px;align-items:center;font-size:.75rem;color:var(--ink-soft)}
+.bar{display:flex;gap:2px}
+.bar i{flex:1;height:6px;border-radius:3px;background:var(--dim)}
+.bar i.f{background:var(--good)}
+.row{display:flex;align-items:center;gap:12px;margin-top:12px;flex-wrap:wrap}
+.reset{margin-left:auto;background:none;border:2px solid var(--dim);border-radius:999px;padding:4px 12px;font-size:.85rem}
+
+@media (prefers-reduced-motion: reduce){
+  .prism,.land{transition:none}
+  .foam,.wave,.bounce,.ref.on,.sticker.pop>g{animation:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Map It Out</h1>
+    <p class="sub">Find the place. Learn why it matters. Earn its sticker.</p>
+  </header>
+
+  <div class="chips" id="chips" role="group" aria-label="Topic"></div>
+
+  <div class="stage">
+    <div class="mapbox">
+      <svg id="map" viewBox="0 0 360 180" role="img" aria-label="Cartoon world map" style="--k:1"></svg>
+      <div class="maptag"><span id="maptag"></span><button class="zoombtn" id="zoomBtn">🌍 Whole world</button></div>
+    </div>
+    <div class="side">
+      <div class="scene"><div class="prism" id="prism">
+        <section class="face" id="f0"></section>
+        <section class="face" id="f1"></section>
+        <section class="face" id="f2"></section>
+      </div></div>
+    </div>
+  </div>
+
+  <section class="progress" aria-labelledby="ph">
+    <h2 id="ph">Sticker book</h2>
+    <p id="summary"></p>
+    <div class="tiles" id="tiles"></div>
+    <div class="row"><span style="font-size:.85rem;color:var(--ink-soft)">📍 = can find it on the map. 💡 = knows why it matters.</span>
+      <button class="reset" id="reset">Start over</button></div>
+  </section>
+</div>
+
+<script>
+/* ---------- Geometry helpers (longitude, latitude → map units) ---------- */
+const XY = (lo,la) => [lo+180, 90-la];
+const pts = a => a.map(([lo,la]) => XY(lo,la).map(n=>n.toFixed(1)).join(",")).join(" L");
+const P = a => "M" + pts(a) + "Z";
+const L = a => "M" + pts(a);
+
+const LAND = {
+  na:{c:"--na",s:[
+    [[-168,66],[-160,70],[-140,70],[-120,72],[-95,72],[-80,74],[-62,66],[-56,52],[-66,45],[-70,42],[-76,35],[-81,31],[-80,25],[-82,29],[-90,30],[-97,26],[-97,21],[-88,21],[-87,15],[-83,9],[-78,8],[-80,8],[-85,11],[-92,15],[-105,20],[-110,24],[-115,31],[-118,34],[-124,40],[-124,48],[-130,55],[-140,60],[-152,58],[-165,60]],
+    [[-55,60],[-45,60],[-20,70],[-20,80],[-40,83],[-65,80],[-70,77],[-55,70]]]},
+  sa:{c:"--sa",s:[[[-78,8],[-72,12],[-62,11],[-52,5],[-35,-5],[-38,-13],[-41,-22],[-48,-26],[-58,-34],[-65,-41],[-66,-48],[-69,-55],[-75,-50],[-73,-40],[-71,-30],[-70,-18],[-76,-14],[-81,-5],[-80,0]]]},
+  eu:{c:"--eu",s:[
+    [[-10,36],[-9,43],[-1,44],[-4,48],[2,51],[8,54],[10,57],[5,58],[5,62],[15,69],[25,71],[30,70],[40,67],[44,68],[55,68],[60,68],[58,60],[58,51],[50,47],[47,44],[41,41],[29,41],[26,40],[23,36],[21,40],[19,42],[16,38],[12,44],[8,44],[3,43],[0,39],[-6,36]],
+    [[-5,50],[1,51],[2,53],[-3,56],[-2,58],[-6,58],[-5,54]]]},
+  as:{c:"--as",s:[
+    [[58,51],[58,60],[60,68],[70,73],[80,73],[100,78],[115,74],[130,72],[140,72],[160,70],[180,69],[180,65],[170,60],[162,56],[156,51],[142,59],[135,54],[140,48],[135,43],[129,35],[126,37],[122,40],[121,31],[118,24],[110,20],[106,10],[104,1],[100,8],[98,16],[94,17],[91,22],[87,21],[80,15],[77,8],[73,17],[72,22],[66,25],[57,25],[57,22],[52,17],[44,12],[40,16],[35,28],[35,33],[36,36],[29,41],[41,41],[47,44],[50,47]],
+    [[130,31],[135,34],[141,38],[142,44],[140,41],[135,36],[131,34]],
+    [[109,1],[117,7],[119,1],[116,-4],[110,-3]],
+    [[95,5],[104,-5],[106,-6],[100,0]]]},
+  af:{c:"--af",s:[
+    [[-17,21],[-17,14],[-12,7],[-8,4],[0,5],[9,4],[10,-2],[13,-9],[12,-17],[15,-27],[18,-34],[26,-34],[33,-28],[35,-20],[41,-15],[40,-10],[39,-5],[43,0],[51,11],[43,12],[38,18],[33,28],[32,31],[20,32],[10,37],[0,36],[-6,36],[-10,30],[-13,27]],
+    [[44,-25],[47,-25],[50,-15],[49,-12],[44,-17]]]},
+  au:{c:"--au",s:[
+    [[114,-22],[114,-34],[118,-35],[124,-33],[135,-35],[140,-38],[146,-39],[150,-37],[153,-30],[153,-25],[146,-18],[142,-11],[141,-17],[136,-12],[130,-12],[126,-14],[122,-18]],
+    [[131,-1],[141,-3],[150,-10],[141,-9]],
+    [[172,-35],[178,-38],[174,-41],[168,-46],[171,-44],[174,-39]]]},
+  an:{c:"--an",s:[[[-180,-78],[-180,-90],[180,-90],[180,-78],[120,-66],[60,-67],[0,-70],[-60,-64],[-75,-72],[-120,-74],[-160,-79]]]}
+};
+
+/* ---------- Course content: phase 1 = where, phase 2 = why it matters ---------- */
+const CATS = {continent:"🌍 Continents", ocean:"🌊 Oceans", mountain:"⛰️ Mountains", river:"🏞️ Rivers", desert:"🏜️ Deserts & reefs", crossing:"🚢 Canals", lines:"📐 Map lines"};
+const CARDS = [
+ {id:"africa",cat:"continent",land:"af",spot:[20,5],name:"Africa",st:"🦴",
+  clue:"This continent is crossed by the equator and holds the world's biggest hot desert.",
+  q:"Scientists have found the oldest fossils of what in Africa?",a:"The earliest humans",w:["The first dinosaurs","The first cats"],
+  fact:"The human story began in East Africa. Every person alive today has ancestors who once lived there.",tip:"Africa: where all of our family trees have their roots."},
+ {id:"asia",cat:"continent",land:"as",spot:[90,60],name:"Asia",st:"🧵",
+  clue:"The largest continent, with the most people and the tallest mountain on Earth.",
+  q:"The Silk Road carried goods from China across Asia. What was its most famous product?",a:"Silk cloth",w:["Potatoes","Chocolate"],
+  fact:"Only China knew how to make silk from silkworm cocoons, so traders walked and rode thousands of miles to buy it.",tip:"The Silk Road was named after what it carried."},
+ {id:"europe",cat:"continent",land:"eu",spot:[22,52],name:"Europe",st:"🏛️",
+  clue:"A small continent full of peninsulas, joined to Asia by land.",
+  q:"Ancient Athens, in Greece, gave the world which big idea?",a:"Democracy, or rule by the people",w:["Pyramids","The compass"],
+  fact:"About 2,500 years ago, citizens of Athens voted on their own laws. Many countries still use this idea today.",tip:"Demos = people, kratos = power. People power!"},
+ {id:"namerica",cat:"continent",land:"na",spot:[-100,58],name:"North America",st:"🌽",
+  clue:"Canada, the United States, and Mexico are all on this continent.",
+  q:"Which crop was first grown by farmers in Mexico and is now eaten around the world?",a:"Corn (maize)",w:["Rice","Wheat"],
+  fact:"Farmers in Mexico turned a wild grass into corn about 9,000 years ago. It became the main food of the Maya and Aztecs.",tip:"Pop some popcorn and thank ancient Mexico."},
+ {id:"samerica",cat:"continent",land:"sa",spot:[-55,-18],name:"South America",st:"☕",
+  clue:"This continent has the largest rainforest on the planet.",
+  q:"Brazil, in South America, grows more of which crop than any other country?",a:"Coffee",w:["Tea","Apples"],
+  fact:"Brazil's warm, wet hills are perfect for coffee plants. About a third of the world's coffee comes from there.",tip:"Brazil wakes the world up every morning."},
+ {id:"australia",cat:"continent",land:"au",spot:[134,-25],name:"Australia",st:"🪃",
+  clue:"The smallest continent. It's also a single country.",
+  q:"Who were the first people to live in Australia?",a:"Aboriginal Australians",w:["The Vikings","The Romans"],
+  fact:"Aboriginal Australians arrived more than 50,000 years ago. They have one of the oldest living cultures on Earth.",tip:"The boomerang is a famous Aboriginal tool."},
+ {id:"antarctica",cat:"continent",land:"an",spot:[0,-80],name:"Antarctica",st:"🐧",
+  clue:"The coldest, windiest continent, covered in ice around the South Pole.",
+  q:"Which country owns Antarctica?",a:"No country. Nations agreed to share it for science.",w:["The United States","Russia"],
+  fact:"The Antarctic Treaty of 1959 says Antarctica is for peace and science only. Researchers visit, but no one owns it.",tip:"Penguins don't need passports."},
+
+ {id:"pacific",cat:"ocean",pin:[-150,5],name:"Pacific Ocean",st:"🛶",
+  clue:"The largest and deepest ocean, between Asia and the Americas.",
+  q:"Polynesian sailors crossed the Pacific to settle islands like Hawaii. How did they find their way?",a:"By reading stars, waves, and birds",w:["With GPS","With maps from Europe"],
+  fact:"Polynesian navigators memorized the stars and felt the ocean swells to steer canoes across thousands of miles of open water.",tip:"Their map was the sky."},
+ {id:"atlantic",cat:"ocean",pin:[-35,15],name:"Atlantic Ocean",st:"⛵",
+  clue:"This ocean separates the Americas from Europe and Africa.",
+  q:"Whose voyage across the Atlantic in 1492 connected Europe and the Americas?",a:"Christopher Columbus",w:["Marco Polo","Zheng He"],
+  fact:"After 1492, plants, animals, and people moved both ways across the Atlantic. This is called the Columbian Exchange.",tip:"In 1492, Columbus sailed the ocean blue."},
+ {id:"indian",cat:"ocean",pin:[78,-20],name:"Indian Ocean",st:"🌬️",
+  clue:"The warmest ocean, south of Asia and between Africa and Australia.",
+  q:"Traders sailed the Indian Ocean using seasonal winds called what?",a:"Monsoons",w:["Tornadoes","Hurricanes"],
+  fact:"Monsoon winds blow one way in summer and the other way in winter, so sailors could ride them to India and back again.",tip:"Wait for the wind, then sail."},
+ {id:"arctic",cat:"ocean",pin:[-10,84],name:"Arctic Ocean",st:"🛷",
+  clue:"The smallest, shallowest ocean, around the North Pole.",
+  q:"What did Inuit hunters traditionally build for shelter on the Arctic ice?",a:"Igloos made of snow blocks",w:["Adobe houses","Stone pyramids"],
+  fact:"Packed snow traps warm air, so an igloo can be much warmer inside than the freezing air outside.",tip:"In the Arctic, snow is a building material."},
+ {id:"southern",cat:"ocean",pin:[40,-60],name:"Southern Ocean",st:"🐋",
+  clue:"This ocean wraps all the way around Antarctica.",
+  q:"In the 1900s, ships came to the Southern Ocean mostly to hunt what?",a:"Whales, for their oil",w:["Sharks, for their teeth","Penguins, for their feathers"],
+  fact:"Whale oil lit lamps and made soap. So many were hunted that countries finally agreed to protect them.",tip:"The whales are coming back now that hunting has mostly stopped."},
+
+ {id:"himalayas",cat:"mountain",pin:[86,28],name:"Himalayas",st:"🧗",
+  clue:"The world's highest mountain range, in southern Asia.",
+  q:"Which people are famous for guiding climbers up Mount Everest?",a:"The Sherpa people",w:["The Maasai","The Vikings"],
+  fact:"The Sherpa have lived high in the Himalayas for centuries. Tenzing Norgay, a Sherpa, was one of the first two people to reach Everest's top in 1953.",tip:"Sherpas are at home on top of the world."},
+ {id:"andes",cat:"mountain",pin:[-70,-20],spot:[-72,-30],name:"Andes Mountains",st:"🥔",
+  clue:"The longest mountain range above water, along South America's west coast.",
+  q:"The Inca farmed high in the Andes. Which crop did people there first grow?",a:"Potatoes",w:["Bananas","Rice"],
+  fact:"The Inca grew hundreds of kinds of potatoes on terraces carved into the mountainsides. Potatoes later spread around the world.",tip:"Every french fry started in the Andes."},
+ {id:"rockies",cat:"mountain",pin:[-110,45],name:"Rocky Mountains",st:"🐂",
+  clue:"A long, rugged mountain range in western North America.",
+  q:"In the 1800s, settlers crossed the Rockies on the Oregon Trail. How did they travel?",a:"In covered wagons pulled by oxen",w:["By train","By car"],
+  fact:"The 2,000-mile trip took about five months. Families walked beside their wagons most of the way.",tip:"Oxen were slow but strong enough for mountain passes."},
+ {id:"alps",cat:"mountain",pin:[10,46],name:"Alps",st:"🐘",
+  clue:"Europe's best-known mountain range, famous for skiing.",
+  q:"In 218 BC, the general Hannibal crossed the Alps to attack Rome with what?",a:"War elephants",w:["Camels","Cannons"],
+  fact:"Hannibal marched his army and about 37 elephants over the snowy Alps. Many didn't survive the cold, but it surprised Rome.",tip:"Elephants in the snow: hard to forget."},
+
+ {id:"nile",cat:"river",river:[[31,31],[31,26],[33,22],[32,16],[33,10],[31,4],[32,0],[33,-2]],spot:[40,18],name:"Nile River",st:"🌾",
+  clue:"One of the longest rivers in the world, flowing north through Africa.",
+  q:"How could ancient Egyptians farm in the middle of a desert?",a:"The Nile flooded each year and left rich soil",w:["It rained there every day","They imported all their food"],
+  fact:"Each summer the Nile overflowed and spread dark, rich mud on its banks. Egyptians planted in it and grew enough to build a great civilization.",tip:"No Nile, no pyramids."},
+ {id:"amazon",cat:"river",river:[[-50,0],[-55,-2],[-60,-3],[-65,-3],[-70,-4],[-73,-5],[-76,-9]],spot:[-65,-3],name:"Amazon River",st:"🌳",
+  clue:"The river carrying the most water on Earth, flowing east across South America.",
+  q:"The Amazon Rainforest is called 'the lungs of the planet.' Why?",a:"Its trees make oxygen and soak up carbon",w:["It has the strongest winds","It's shaped like lungs"],
+  fact:"Billions of trees breathe in carbon dioxide and breathe out oxygen. Cutting them down for farms and cattle is a big worldwide concern.",tip:"The rainforest breathes for all of us."},
+ {id:"mississippi",cat:"river",river:[[-89,29],[-91,31],[-90,35],[-90,38],[-91,42],[-93,45],[-95,47]],spot:[-90,38],name:"Mississippi River",st:"🛳️",
+  clue:"The major river of the United States, flowing south to the Gulf of Mexico.",
+  q:"Why was the Mississippi so important to farmers in the 1800s?",a:"Steamboats carried their crops to market",w:["It was the border with Mexico","It froze into a road"],
+  fact:"Steamboats hauled cotton, corn, and wheat down to New Orleans, where ships carried them around the world.",tip:"The river was the highway before there were highways."},
+ {id:"yangtze",cat:"river",river:[[121,31],[117,31],[114,30],[111,30],[106,29],[102,27],[98,32],[92,34]],spot:[104,24],name:"Yangtze River",st:"🍚",
+  clue:"The longest river in Asia, flowing east across China.",
+  q:"What crop grows in flooded fields along the Yangtze and feeds much of China?",a:"Rice",w:["Corn","Potatoes"],
+  fact:"Rice needs lots of water. The Yangtze valley's wet paddies have grown rice for about 9,000 years.",tip:"Yangtze = rice bowl of China."},
+ {id:"tigris",cat:"river",river:[[48,30],[46,32],[44,34],[42,36],[40,38]],spot:[44,34],name:"Tigris & Euphrates Rivers",st:"📜",
+  clue:"Two rivers in Southwest Asia. The land between them is called Mesopotamia.",
+  q:"The Sumerians of Mesopotamia invented one of the world's first what?",a:"Writing systems",w:["Printing presses","Telescopes"],
+  fact:"Sumerians pressed wedge-shaped marks into clay tablets. This writing, called cuneiform, helped them keep track of crops and trade.",tip:"Mesopotamia means 'land between the rivers.'"},
+ {id:"huanghe",cat:"river",river:[[119,37.5],[116,36],[113,35],[110,35],[108,39],[106,40],[104,37],[101,36],[97,35]],spot:[113,40],name:"Huang He (Yellow River)",st:"🌊",
+  clue:"A river in northern China, colored by yellow mud it carries.",
+  q:"The Yellow River is nicknamed 'China's Sorrow.' Why?",a:"Its floods destroyed farms and villages",w:["Its water is too salty","It is always frozen"],
+  fact:"The yellow mud made farmland rich, but it also built up and made the river overflow. Early Chinese dynasties grew up on its banks.",tip:"The same mud that fed people also flooded them."},
+
+ {id:"sahara",cat:"desert",area:[10,23,26,9],spot:[5,23],name:"Sahara Desert",st:"🐪",
+  clue:"The largest hot desert in the world, covering much of northern Africa.",
+  q:"Camel caravans crossed the Sahara to trade gold for what?",a:"Salt",w:["Silk","Chocolate"],
+  fact:"West Africa had gold but needed salt. Trade made kingdoms like Mali rich, and its ruler Mansa Musa became one of the wealthiest people in history.",tip:"Salt was worth its weight in gold."},
+ {id:"gobi",cat:"desert",area:[105,43,10,4],spot:[102,46],name:"Gobi Desert",st:"🐎",
+  clue:"A cold desert in northern China and southern Mongolia.",
+  q:"Genghis Khan's warriors came from near the Gobi. What made them so powerful?",a:"Expert horse riding",w:["Giant warships","Trains"],
+  fact:"Mongol riders could travel far and fast. They built the largest connected land empire in history in the 1200s.",tip:"Mongol kids learned to ride almost before they could walk."},
+ {id:"reef",cat:"desert",pin:[147,-18],name:"Great Barrier Reef",st:"🐠",
+  clue:"The world's largest coral reef system, off Australia's northeast coast.",
+  q:"What is the biggest danger to the Great Barrier Reef today?",a:"Warming ocean water that bleaches coral",w:["Sharks eating the coral","Volcanoes"],
+  fact:"When water gets too warm, coral turns white and can die. The reef also brings billions of dollars in tourism to Australia.",tip:"White coral is a warning sign."},
+
+ {id:"panama",cat:"crossing",pin:[-79.7,9.1],name:"Panama Canal",st:"🚢",
+  clue:"A canal cut across a narrow strip of land joining North and South America.",
+  q:"Before this canal opened in 1914, ships from New York to California had to do what?",a:"Sail all the way around South America",w:["Sail up the Mississippi","Sail through the Arctic"],
+  fact:"The canal cut about 8,000 miles off the trip. Today thousands of cargo ships use it every year.",tip:"A shortcut through the isthmus."},
+ {id:"suez",cat:"crossing",pin:[32.5,30.5],spot:[40,32],name:"Suez Canal",st:"⚓",
+  clue:"A canal in Egypt linking the Mediterranean Sea to the Red Sea.",
+  q:"Ships heading from Europe to Asia use this canal so they don't have to do what?",a:"Sail all the way around Africa",w:["Sail around Australia","Cross the Pacific"],
+  fact:"Opened in 1869, it made trade between Europe and Asia much faster. About 1 in 10 of the world's cargo ships pass through it.",tip:"Suez skips the long trip around Africa."},
+
+ {id:"equator",cat:"lines",line:"eq",spot:[-20,0],name:"Equator",st:"☀️",
+  clue:"This imaginary line at 0° latitude splits Earth into Northern and Southern Hemispheres.",
+  q:"Which country in South America is named after the equator?",a:"Ecuador",w:["Chile","Argentina"],
+  fact:"Ecuador is Spanish for 'equator.' Near the equator it's warm all year, so crops like bananas and cocoa grow well.",tip:"Ecuador sits right on the equator."},
+ {id:"prime",cat:"lines",line:"pm",spot:[0,62],name:"Prime Meridian",st:"🕰️",
+  clue:"This imaginary line at 0° longitude splits Earth into Eastern and Western Hemispheres.",
+  q:"World time zones are counted from the Prime Meridian. What does GMT stand for?",a:"Greenwich Mean Time",w:["Global Map Time","Great Meridian Tower"],
+  fact:"In 1884, countries agreed the Prime Meridian would run through Greenwich, England. Clocks around the world are set from there.",tip:"Greenwich is where world time starts."}
+];
+const BYID = Object.fromEntries(CARDS.map(c=>[c.id,c]));
+const spotOf = c => c.spot || c.pin || (c.area && c.area.slice(0,2));
+
+/* ---------- Saved progress ---------- */
+const KEY = "mapitout-v2";
+let prog = {};
+try { prog = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { prog = {}; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(prog)); } catch(e) {} };
+const rec = id => (prog[id] ||= {where:0, why:0, sticker:false});
+const lvl = id => { const r = prog[id]; return r ? Math.min(r.where, r.why) : 0; };
+
+/* ---------- Adaptive picker ---------- */
+let topic = "all", recent = [];
+const pool = () => CARDS.filter(c => topic==="all" || c.cat===topic);
+function pick(){
+  const list = pool(), fresh = list.filter(c => !recent.includes(c.id)), cands = fresh.length ? fresh : list;
+  const wt = cands.map(c => [10,5,2,0.6][lvl(c.id)]);
+  let r = Math.random()*wt.reduce((a,b)=>a+b,0);
+  for (let i=0;i<cands.length;i++){ r -= wt[i]; if (r<=0) return cands[i]; }
+  return cands.at(-1);
+}
+function remember(id){ recent.push(id); const n = Math.min(3, pool().length-1); while (recent.length>Math.max(n,0)) recent.shift(); }
+const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
+
+/* ---------- Cartoon map drawing ---------- */
+const svg = document.getElementById("map"), tag = document.getElementById("maptag");
+// Anchored decorations are drawn around (0,0), then placed and scaled with --k so they stay readable at any zoom
+const at = (x,y,inner,cls="") => `<g class="${cls}" style="transform:translate(${x}px,${y}px) scale(var(--k))">${inner}</g>`;
+function mountainsG(){
+  const peak = (dx,h,w) => `<g class="bounce"><path d="M${dx-w},0 L${dx},${-h} L${dx+w},0Z" fill="var(--rock)" stroke="var(--outline)" stroke-width=".8" stroke-linejoin="round"/>
+    <path d="M${dx-w*.38},${-h*.62} L${dx},${-h} L${dx+w*.38},${-h*.62} L${dx+w*.15},${-h*.55} L${dx},${-h*.66} L${dx-w*.15},${-h*.55}Z" fill="var(--snow)" stroke="var(--outline)" stroke-width=".6" stroke-linejoin="round"/></g>`;
+  return peak(-8,13,7)+peak(8,11,6.5)+peak(0,18,9);
+}
+function wavesG(){
+  const w = (dx,dy,k) => `<path class="wave ${k}" d="M${dx-9},${dy} q2.2,-3 4.5,0 t4.5,0 t4.5,0 t4.5,0"/>`;
+  return w(-6,-8,"")+w(6,1,"b")+w(-3,9,"c");
+}
+const pinG = () => `<g class="bounce"><path d="M0,0 l-4,-7 a4.6,4.6 0 1 1 8,0z" fill="var(--pin)" stroke="var(--outline)" stroke-width=".8" stroke-linejoin="round"/><circle cy="-9.4" r="1.7" fill="#fff"/></g>`;
+function dunes(lo,la,rx,ry){
+  const [x,y] = XY(lo,la);
+  let s = `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="var(--sand)" stroke="var(--outline)" stroke-width="1.5px" vector-effect="non-scaling-stroke" stroke-dasharray="6 4"/>`;
+  s += `<path d="M${x-rx*.7},${y+ry*.35} q${rx*.2},-${ry*.8} ${rx*.4},0 q${rx*.2},-${ry*.9} ${rx*.45},0 q${rx*.25},-${ry*.7} ${rx*.5},0" fill="none" stroke="var(--rock)" stroke-width="2px" vector-effect="non-scaling-stroke" stroke-linecap="round"/>`;
+  s += at(x+rx*.55, y-ry*.45, `<g class="bounce"><circle r="3" fill="#FFD43B" stroke="var(--outline)" stroke-width=".7"/></g>`);
+  return s;
+}
+function sticker(c,popping){
+  const [x,y] = XY(...spotOf(c));
+  return at(x,y,`<g><circle r="7"/><text font-size="8.5" text-anchor="middle" dominant-baseline="central" y=".5">${c.st}</text></g>`, "sticker"+(popping?" pop":""));
+}
+function label(c){
+  let [x,y] = XY(...spotOf(c));
+  return at(x,y,`<text class="label" y="15" text-anchor="middle">${c.name}</text>`);
+}
+
+/* ---------- Where to look: a 2:1 box around each card's feature ---------- */
+const WORLD = [0,0,360,180];
+function bbox(list){
+  const xs = list.map(p=>XY(...p)[0]), ys = list.map(p=>XY(...p)[1]);
+  return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
+}
+function fit([x0,y0,x1,y1], pad, minW){
+  let w = Math.max((x1-x0)*(1+pad), (y1-y0)*(1+pad)*2, minW);
+  w = Math.min(w, 360); const h = w/2;
+  let x = (x0+x1)/2 - w/2, y = (y0+y1)/2 - h/2;
+  x = Math.min(Math.max(x,0), 360-w); y = Math.min(Math.max(y,0), 180-h);
+  return [x,y,w,h];
+}
+function focusBox(c){
+  if (c.line) return WORLD;
+  if (c.land) return fit(bbox(LAND[c.land].s[0]), .45, 170);
+  if (c.river) return fit(bbox(c.river), 1.2, 150);
+  if (c.area){ const [x,y]=XY(c.area[0],c.area[1]); return fit([x-c.area[2],y-c.area[3],x+c.area[2],y+c.area[3]], 1.4, 160); }
+  const [x,y] = XY(...c.pin); return fit([x-10,y-10,x+10,y+10], 1.5, c.cat==="ocean" ? 210 : 150);
+}
+const widen = (b,f) => fit([b[0],b[1],b[0]+b[2],b[1]+b[3]], f-1, 0);
+
+/* ---------- Smooth zooming ---------- */
+let view = WORLD.slice(), anim = 0, wholeWorld = false;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function setView(b){
+  view = b; svg.setAttribute("viewBox", b.map(n=>n.toFixed(2)).join(" "));
+  svg.style.setProperty("--k", Math.pow(b[2]/360, .65).toFixed(3));
+}
+function tween(to, ms){
+  return new Promise(res => {
+    const from = view.slice(), t0 = performance.now(), id = ++anim;
+    const ease = t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2;
+    (function frame(now){
+      if (id!==anim) return res();
+      const t = Math.min(1,(now-t0)/ms), e = ease(t);
+      setView(from.map((v,i)=>v+(to[i]-v)*e));
+      t<1 ? requestAnimationFrame(frame) : res();
+    })(t0);
+  });
+}
+async function flyTo(target){
+  if (wholeWorld) target = WORLD;
+  if (reduce){ anim++; return setView(target); }
+  // zoom out enough to see both places, then swoop in
+  const u = [Math.min(view[0],target[0]), Math.min(view[1],target[1]),
+             Math.max(view[0]+view[2],target[0]+target[2]), Math.max(view[1]+view[3],target[1]+target[3])];
+  const mid = fit(u, .25, 0);
+  const far = mid[2] > Math.max(view[2],target[2])*1.15;
+  if (far) await tween(mid, 650);
+  await tween(target, far ? 850 : 700);
+}
+document.getElementById("zoomBtn").onclick = () => {
+  wholeWorld = !wholeWorld;
+  document.getElementById("zoomBtn").textContent = wholeWorld ? "🔍 Zoom in" : "🌍 Whole world";
+  flyTo(wholeWorld ? WORLD : (mapStage===3 ? widen(focusBox(card),1.5) : focusBox(card)));
+};
+
+let mapStage = 1;
+function drawMap(card, stage){
+  mapStage = stage;
+  let s = "";
+  for (let i=0;i<14;i++){ const x=(i*67)%350+5, y=(i*41)%170+6; s += at(x,y,`<path d="M0,0 q1.2,-1.4 2.4,0 t2.4,0" fill="none" stroke="#fff" stroke-width=".5" opacity=".45"/>`); }
+  for (const v of Object.values(LAND)) v.s.forEach(sh => s += `<path class="shadow" style="transform:translate(calc(1.1px*var(--k)),calc(1.4px*var(--k)))" d="${P(sh)}"/>`);
+  for (const [k,v] of Object.entries(LAND)){
+    const fill = !card.land || card.land===k ? `var(${v.c})` : "var(--dim)";
+    v.s.forEach(sh => s += `<path class="land" d="${P(sh)}" fill="${fill}"/>`);
+  }
+  s += `<line class="ref ${card.line==="eq"?"on":""}" x1="0" y1="90" x2="360" y2="90"/>`;
+  s += `<line class="ref ${card.line==="pm"?"on":""}" x1="180" y1="0" x2="180" y2="180"/>`;
+
+  CARDS.forEach(c => { if (c.id!==card.id && prog[c.id]?.sticker) s += sticker(c,false); });
+
+  if (card.cat==="mountain"){ const [x,y]=XY(...card.pin); s += at(x,y+4,mountainsG()); }
+  if (card.cat==="ocean"){ const [x,y]=XY(...card.pin); s += at(x,y,wavesG()) + at(x,y,pinG()); }
+  if (card.river){ s += `<path class="river-base" d="${L(card.river)}"/><path class="river" d="${L(card.river)}"/><path class="foam" d="${L(card.river)}"/>`; }
+  if (card.area){ s += dunes(...card.area); }
+  if (card.cat==="crossing" || card.id==="reef"){ const [x,y]=XY(...card.pin); s += at(x,y,pinG()); }
+  if (card.land && stage===1){ const [x,y]=XY(...spotOf(card)); s += at(x,y,`<text y="4" font-size="12" text-anchor="middle" class="bounce">❓</text>`); }
+
+  if (stage>=2) s += label(card);
+  if (stage===3) s += sticker(card,true);
+  svg.innerHTML = s;
+
+  const hints = {continent:"Which continent is colored in?", ocean:"Look for the splashing waves", mountain:"Look for the snowy peaks",
+    river:"Follow the rushing blue river", desert: card.id==="reef" ? "Look for the red pin" : "Look for the sandy dunes",
+    crossing:"Look for the red pin", lines:"Look at the red dotted line"};
+  tag.textContent = stage===1 ? hints[card.cat] : stage===2 ? `📍 ${card.name}` :
+    (prog[card.id]?.sticker ? `${card.st} Sticker earned for ${card.name}` : `${card.st} Answer the 💡 question right to earn this sticker`);
+
+  // Side 1 & 2: close up on the place. Side 3: pull back to see it among the other stickers.
+  flyTo(stage===3 ? widen(focusBox(card),1.6) : focusBox(card));
+}
+
+/* ---------- The three-sided card ---------- */
+const prism = document.getElementById("prism"), faces = [0,1,2].map(i=>document.getElementById("f"+i));
+let step = 0, tz = 0, card = null, got1 = false;
+function layout(){
+  const w = prism.clientWidth; tz = w / (2*Math.tan(Math.PI/3));
+  faces.forEach((f,i) => f.style.transform = `rotateY(${i*120}deg) translateZ(${tz}px)`);
+  prism.style.transform = `translateZ(${-tz}px) rotateY(${-step*120}deg)`;
+}
+new ResizeObserver(layout).observe(prism);
+function turnTo(html){
+  const next = (step+1)%3;
+  faces[next].innerHTML = html;
+  step++; layout();
+  faces.forEach((f,i) => { const on = i===step%3; f.inert = !on; f.setAttribute("aria-hidden", !on); });
+  setTimeout(() => faces[step%3].querySelector("button")?.focus({preventScroll:true}), 500);
+}
+const dots = n => `<div class="steps" aria-label="Side ${n} of 3">${[1,2,3].map(i=>`<span class="${i<=n?"on":""}"></span>`).join("")}</div>`;
+
+function side1(){
+  const same = shuffle(CARDS.filter(x => x.cat===card.cat && x.id!==card.id));
+  const extra = shuffle(CARDS.filter(x => x.cat!==card.cat));
+  const opts = shuffle([card, ...same.concat(extra).slice(0,3)]);
+  return `${dots(1)}
+    <p class="kicker">📍 Side 1: Find it</p>
+    <h2 class="q">${card.clue}</h2>
+    <p class="kicker" style="font-weight:400">What place is shown on the map?</p>
+    <div class="opts">${opts.map(o=>`<button class="opt" data-id="${o.id}">${o.name}</button>`).join("")}</div>
+    <p class="fb" aria-live="polite"></p>`;
+}
+function side2(){
+  const opts = shuffle([card.a, ...card.w]);
+  return `${dots(2)}
+    <p class="recap">${got1 ? "✅ You found it:" : "📍 This is:"} <b>${card.name}</b></p>
+    <p class="kicker">💡 Side 2: Why it matters</p>
+    <h2 class="q">${card.q}</h2>
+    <div class="opts">${opts.map(o=>`<button class="opt" data-a="${o===card.a?1:0}">${o}</button>`).join("")}</div>
+    <p class="fb" aria-live="polite"></p>`;
+}
+function side3(got2){
+  return `${dots(3)}
+    <p class="kicker">🏅 Side 3: Remember it</p>
+    <div class="big" aria-hidden="true">${card.st}</div>
+    <h2 class="q" style="text-align:center">${card.name}</h2>
+    <p class="fact">${card.fact}</p>
+    <div class="tip"><b>Memory trick</b>${card.tip}</div>
+    <div class="score">
+      <span style="background:${got1?"var(--good)":"var(--miss)"}">📍 ${got1?"Found it":"Practice finding it"}</span>
+      <span style="background:${got2?"var(--good)":"var(--miss)"}">💡 ${got2?"Knew why":"Practice why"}</span>
+    </div>
+    <button class="go">Next place</button>`;
+}
+
+function wireSide1(face){
+  face.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    got1 = b.dataset.id===card.id;
+    face.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.id===card.id) x.classList.add("right"); });
+    if (!got1) b.classList.add("wrong");
+    const r = rec(card.id); r.where = got1 ? Math.min(3,r.where+1) : 0; save();
+    face.querySelector(".fb").textContent = got1 ? "Nice find!" : `Not quite. It's the ${card.name}.`;
+    const go = document.createElement("button"); go.className="go"; go.textContent="Turn the card"; face.appendChild(go); go.focus();
+    go.onclick = () => { drawMap(card,2); turnTo(side2()); wireSide2(faces[step%3]); };
+    renderTiles();
+  });
+}
+function wireSide2(face){
+  face.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const got2 = b.dataset.a==="1";
+    face.querySelectorAll(".opt").forEach(x => { x.disabled = true; if (x.dataset.a==="1") x.classList.add("right"); });
+    if (!got2) b.classList.add("wrong");
+    const r = rec(card.id); r.why = got2 ? Math.min(3,r.why+1) : 0; if (got2) r.sticker = true; save();
+    face.querySelector(".fb").textContent = got2 ? "That's it!" : `The answer: ${card.a}.`;
+    const go = document.createElement("button"); go.className="go"; go.textContent="Turn the card"; face.appendChild(go); go.focus();
+    go.onclick = () => { drawMap(card,3); turnTo(side3(got2)); faces[step%3].querySelector(".go").onclick = () => start(pick()); };
+    renderTiles();
+  });
+}
+function start(c, first){
+  card = c; got1 = false; remember(c.id); drawMap(c,1);
+  if (first){ faces[0].innerHTML = side1(); faces.forEach((f,i)=>{ f.inert = i!==0; f.setAttribute("aria-hidden", i!==0); }); layout(); }
+  else turnTo(side1());
+  wireSide1(faces[step%3]);
+  renderTiles();
+}
+
+/* ---------- Sticker book ---------- */
+function renderTiles(){
+  const list = pool();
+  const bar = n => `<span class="bar">${[1,2,3].map(i=>`<i class="${n>=i?"f":""}"></i>`).join("")}</span>`;
+  document.getElementById("tiles").innerHTML = list.map(c => { const r = prog[c.id] || {where:0,why:0};
+    return `<button class="tile" data-id="${c.id}" title="Study ${c.name}"><span class="nm">${prog[c.id]?.sticker?c.st:"⬜"} ${c.name}</span>
+      <span class="bars"><span>📍</span>${bar(r.where)}<span>💡</span>${bar(r.why)}</span></button>`; }).join("");
+  document.querySelectorAll(".tile").forEach(t => t.onclick = () => start(BYID[t.dataset.id]));
+  const stickers = list.filter(c => prog[c.id]?.sticker).length, weak = list.filter(c => prog[c.id] && lvl(c.id)===0).map(c=>c.name);
+  document.getElementById("summary").textContent = `${stickers} of ${list.length} stickers earned.` +
+    (weak.length ? ` Coming up more often: ${weak.slice(0,3).join(", ")}${weak.length>3?"…":""}.` : " Tap any place to practice it.");
+}
+
+/* ---------- Topics & reset ---------- */
+const chips = document.getElementById("chips");
+chips.innerHTML = `<button class="chip" data-t="all" aria-pressed="true">Everything</button>` +
+  Object.entries(CATS).map(([k,v])=>`<button class="chip" data-t="${k}" aria-pressed="false">${v}</button>`).join("");
+chips.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+  topic = b.dataset.t; recent = [];
+  chips.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x===b));
+  start(pick());
+});
+document.getElementById("reset").onclick = () => { if (confirm("Clear all stickers and progress?")) { prog = {}; save(); recent = []; start(pick()); } };
+
+start(pick(), true);
+</script>
+</body>
+</html>

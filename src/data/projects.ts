@@ -25,6 +25,8 @@ export interface Project {
   meta?: { label: string; value: string }[];
   /** URL of a playable build to embed in an iframe on the project page. */
   embedUrl?: string;
+  /** Give the embed a tall frame (for builds that need more height than 16:9, like full-page web apps). */
+  embedTall?: boolean;
   controls?: string;
   idea?: string;
   build?: string;
@@ -77,6 +79,31 @@ export const projects: Project[] = [
     idea: '[What these games explore, and why small and fast was the point.]',
     build: '[How a written spec becomes a published game through test-driven development.]',
     learned: '[One or two product lessons from shipping many small games.]',
+  },
+  {
+    slug: 'map-it-out',
+    category: 'Edutainment',
+    status: 'Playable prototype',
+    title: 'Map It Out',
+    summary:
+      'A geography review game for sixth graders: find a place on a cartoon map, learn why it matters, and earn its sticker. It brings back the places each student keeps missing.',
+    thumbnail: '/projects/map-it-out.jpg',
+    thumbnailVideo: '/projects/map-it-out.mp4',
+    thumbnailLabel: '[GAMEPLAY LOOP]',
+    links: [{ label: 'Play full screen', href: '/play/map-it-out/' }],
+    meta: [
+      { label: 'Status', value: 'Playable prototype' },
+      { label: 'Built with', value: 'Claude' },
+      { label: 'Platform', value: 'Web · mobile' },
+      { label: 'Year', value: '2026' },
+    ],
+    embedUrl: '/play/map-it-out/',
+    embedTall: true,
+    controls: 'Tap an answer, then turn the card',
+    idea:
+      'Each place is a three-sided card: find it on the map, answer why it matters to people, then see a fact and a memory trick. Getting both right earns a sticker, and an adaptive picker brings back the places a student misses more often.',
+    build: '[How you went from the idea to a playable prototype with Claude, and how you checked it against a sixth-grade curriculum.]',
+    learned: '[One or two product lessons about designing learning games for this age group.]',
   },
   {
     slug: 'build-pipeline',

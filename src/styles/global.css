@@ -130,6 +130,7 @@ img { max-width: 100%; display: block; }
 .demo-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 20px; border-bottom: 1px solid var(--accent); font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
 .demo-stage { aspect-ratio: 16 / 9; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; background-color: var(--panel); background-size: 48px 48px; padding: 24px; text-align: center; }
 .demo-frame { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; background: var(--panel); }
+.demo-frame.tall { aspect-ratio: auto; height: min(860px, 85vh); min-height: 560px; }
 .notes { border-top: 1px solid var(--accent); }
 .notes-inner { padding-top: 72px; padding-bottom: 72px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px; }
 .notes h2 { margin: 0 0 14px; font-weight: 500; font-size: 13px; font-family: var(--mono); letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; }
