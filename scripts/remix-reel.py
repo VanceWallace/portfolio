@@ -100,17 +100,24 @@ def probe(path):
 
 def build(files, output):
     infos = [probe(f) for f in files]
-    portrait = sum(h > w for w, h, _ in infos) > len(infos) / 2
+    portrait = sum(h > w for w, h, _ in infos) >= len(infos) / 2  # ties go to phone shape
     W, H = (SHORT_SIDE, LONG_SIDE) if portrait else (LONG_SIDE, SHORT_SIDE)
     durs = [min(d, MAX_CLIP) for _, _, d in infos]
     fade = min(FADE, *(d / 2 for d in durs)) if len(files) > 1 else 0
 
     parts = []
     for i, d in enumerate(durs):
+        w, h, _ = infos[i]
+        if (h > w) != portrait:
+            # Wrong orientation (e.g. a landscape clip in a phone-shaped reel):
+            # center-crop it to fill the frame instead of shrinking it into bars.
+            fit = f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}"
+        else:
+            fit = (f"scale={W}:{H}:force_original_aspect_ratio=decrease,"
+                   f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black")
         parts.append(
             f"[{i}:v]trim=0:{d:.3f},setpts=PTS-STARTPTS,fps={FPS},"
-            f"scale={W}:{H}:force_original_aspect_ratio=decrease,"
-            f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1,format=yuv420p[v{i}]")
+            f"{fit},setsar=1,format=yuv420p[v{i}]")
     last, t = "[v0]", durs[0]
     for i in range(1, len(files)):
         if fade > 0:
