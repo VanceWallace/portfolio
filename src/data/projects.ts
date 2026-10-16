@@ -117,7 +117,9 @@ export const projects: Project[] = [
     title: 'Spec-driven build pipeline',
     summary:
       'The workflow behind the games: single-game repos, a LAN QR dev server for phone playtests, and pre-commit checks.',
-    thumbnailLabel: '[TERMINAL RECORDING]',
+    thumbnail: '/projects/build-pipeline.jpg',
+    thumbnailVideo: '/projects/build-pipeline.mp4',
+    thumbnailLabel: '[PIPELINE LOOP]',
     links: [{ label: 'GitHub', href: 'https://github.com/VanceWallace' }],
     meta: [
       { label: 'Status', value: 'Open source' },
