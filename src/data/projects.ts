@@ -13,7 +13,7 @@ export interface Project {
   status: string;
   title: string;
   summary: string;
-  /** Path under /public, e.g. '/projects/warp-cube.gif'. Leave empty to show a placeholder. */
+  /** Path under /public, e.g. '/projects/my-game.gif'. Leave empty to show a placeholder. */
   thumbnail?: string;
   /** Path under /public to a short silent .mp4 that autoplays and loops in the card. Takes priority over thumbnail. */
   thumbnailVideo?: string;
@@ -34,30 +34,6 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  {
-    slug: 'warp-cube',
-    category: 'Puzzle game',
-    status: 'In development',
-    title: 'Warp Cube',
-    summary:
-      'A spatial puzzle about folding flat hexomino shapes into cubes, built on polyhedral net theory. Headed toward Steam.',
-    thumbnailLabel: '[GAMEPLAY GIF]',
-    links: [
-      { label: 'Play demo', href: '[DEMO URL]' },
-      { label: 'Watch trailer', href: '[TRAILER URL]' },
-    ],
-    meta: [
-      { label: 'Status', value: 'In development' },
-      { label: 'Built with', value: 'Claude Code · [ENGINE]' },
-      { label: 'Platform', value: 'Web demo · Steam' },
-      { label: 'Year', value: '2026' },
-    ],
-    controls: '[CONTROLS]',
-    idea:
-      "Turn the intuition of folding paper into a puzzle. Levels draw on polyhedral net theory and rigid-origami constraints, so every shape either folds or it doesn't.",
-    build: '[Spec → Claude Code → playtest loop: what you specified, how you evaluated builds, and what you cut.]',
-    learned: '[One or two product lessons that carry beyond this game.]',
-  },
   {
     slug: 'remix-games',
     category: 'Browser games',
