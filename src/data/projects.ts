@@ -78,10 +78,12 @@ export const projects: Project[] = [
       { label: 'Platform', value: 'Web · mobile' },
       { label: 'Year', value: '2026' },
     ],
-    controls: '[CONTROLS]',
-    idea: '[What these games explore, and why small and fast was the point.]',
-    build: '[How a written spec becomes a published game through test-driven development.]',
-    learned: '[One or two product lessons from shipping many small games.]',
+    idea:
+      'Each game is a single mechanic you can pick up in seconds on a phone: pour to the line, water the flowers, spin the sun the right way. Keeping them small meant every game could go from idea to published quickly, and each one became a focused experiment in what makes one interaction feel satisfying.',
+    build:
+      "Every game starts as a written spec, and the spec's rules become tests before any game code exists. Claude Code builds against those tests in a repo of its own, and a local dev server shows a QR code so I can playtest on my phone after every change. Before anything ships, a pre-commit check strips out debug hooks and code patterns that remix.gg would flag as obfuscated.",
+    learned:
+      'A spec only directs an AI builder well when it can be checked, so writing the tests first is what lets me judge a build quickly instead of reading every line. And whatever a platform will reject belongs in an automated check, not in my memory: each rule I had to learn the hard way became one more line in the pre-commit hook.',
   },
   {
     slug: 'map-it-out',
