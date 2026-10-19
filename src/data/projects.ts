@@ -35,6 +35,35 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'candacecalc',
+    category: 'Mobile app development',
+    status: 'Now in TestFlight',
+    title: 'CandaceCalc',
+    summary:
+      'A retro 1980s printing calculator for iOS and Android, with a paper tape that keeps a history of every calculation. Built with Claude Code.',
+    thumbnail: '/projects/candacecalc.jpg',
+    thumbnailVideo: '/projects/candacecalc.mp4',
+    thumbnailLabel: '[APP LOOP]',
+    links: [
+      { label: 'Try it', href: 'https://vancewallace.github.io/candace-calc/' },
+      { label: 'Source', href: 'https://github.com/VanceWallace/candace-calc' },
+    ],
+    meta: [
+      { label: 'Status', value: 'Now in TestFlight' },
+      { label: 'Built with', value: 'Claude Code · Expo · React Native' },
+      { label: 'Platform', value: 'iOS · Android · web' },
+      { label: 'Year', value: '2026' },
+    ],
+    embedUrl: 'https://vancewallace.github.io/candace-calc/',
+    embedTall: true,
+    controls: 'Tap the keys; press = to print to the tape',
+    idea:
+      'A desk calculator that prints: every result feeds out on a paper tape you can scroll back through, so the history of a calculation is right there instead of lost when you clear the display.',
+    build:
+      'One Expo and React Native codebase runs on iOS, Android and the web. The calculator logic is covered by Jest tests, and every push to main runs those tests and publishes the web demo you can try here, limited to 10 calculations or one minute.',
+    learned: '[One or two product lessons from taking a mobile app from prototype to TestFlight.]',
+  },
+  {
     slug: 'voice-agent',
     category: 'Voice AI',
     status: 'Live',
