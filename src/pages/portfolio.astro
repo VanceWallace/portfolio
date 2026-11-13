@@ -1,0 +1,23 @@
+---
+// glassandwater.com/portfolio — the résumé link. Same content as the home page,
+// but it opens straight onto the projects instead of the intro hero.
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import WorkWithMe from '../components/WorkWithMe.astro';
+import About from '../components/About.astro';
+import { projects } from '../data/projects';
+---
+<Base home title="Portfolio — Vance Wallace">
+  <section id="projects" class="wrap" style="padding-top: 56px; padding-bottom: 96px">
+    <div class="section-head">
+      <h2>Portfolio: side projects &amp; demos</h2>
+      <span class="label">Playable in the browser</span>
+    </div>
+    <div class="cards">
+      {projects.map((p, i) => <ProjectCard project={p} index={i} />)}
+    </div>
+  </section>
+
+  <WorkWithMe />
+  <About />
+</Base>
