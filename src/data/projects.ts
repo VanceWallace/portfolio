@@ -95,7 +95,7 @@ export const projects: Project[] = [
     slug: 'build-pipeline',
     category: 'Tooling',
     status: 'Open source',
-    title: 'Spec-driven build pipeline',
+    title: 'Test-driven AI development',
     summary:
       'The workflow behind the games: single-game repos, a LAN QR dev server for phone playtests, and pre-commit checks.',
     thumbnail: '/projects/build-pipeline.jpg',
