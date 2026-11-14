@@ -5,6 +5,9 @@ name: Remix games reel
 on:
   schedule:
     - cron: "17 11 * * *"   # daily, ~7am Eastern
+  push:                      # rebuild right away when the script (e.g. its skip list) changes
+    branches: [main]
+    paths: [scripts/remix-reel.py]
   workflow_dispatch:         # "Run workflow" button for an immediate rebuild
     inputs:
       force:

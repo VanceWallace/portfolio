@@ -36,6 +36,11 @@ SHORT_SIDE = 720
 ORDER = [
     "f368fb35-b888-429e-b0ec-e6dc2fb8f15e",  # Sun Spinner
     "9be3f900-942a-47d3-9c01-09b1829bbc94",  # Aqua Bloom
+]
+
+# Games listed here never appear in the reel, even though they're on the profile.
+# Delete a line to bring that game back.
+SKIP = [
     "c19c4781-3c48-4d7c-a43a-39202cfa74f6",  # Pour Champion
 ]
 
@@ -79,6 +84,9 @@ def find_clips(html):
 
     clips = []
     for gid in games:
+        if gid in SKIP:
+            print(f"  {gid}: on the skip list, leaving it out")
+            continue
         urls = previews.get(gid, [])
         if not urls:
             print(f"  {gid}: no preview clip, skipping")
