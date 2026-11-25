@@ -65,20 +65,22 @@ export const projects: Project[] = [
   {
     slug: 'candacecalc',
     category: 'Mobile app development',
-    status: 'Now in TestFlight',
+    status: 'Now on the App Store',
     title: 'CandaceCalc',
     summary:
-      'A retro 1980s printing calculator for iOS and Android, with a paper tape that keeps a history of every calculation. Built with Claude Code.',
+      'A retro 1980s printing calculator for iOS and Android, with a paper tape that keeps a history of every calculation. Solo development with Claude Code and Claude Design.',
     thumbnail: '/projects/candacecalc.jpg',
     thumbnailVideo: '/projects/candacecalc.mp4',
     thumbnailLabel: '[APP LOOP]',
     links: [
+      { label: 'App Store', href: 'https://apps.apple.com/us/app/candacecalc/id6832380859' },
       { label: 'Try it', href: 'https://vancewallace.github.io/candace-calc/' },
       { label: 'Source', href: 'https://github.com/VanceWallace/candace-calc' },
     ],
     meta: [
-      { label: 'Status', value: 'Now in TestFlight' },
-      { label: 'Built with', value: 'Claude Code · Expo · React Native' },
+      { label: 'Status', value: 'Now on the App Store' },
+      { label: 'Team', value: 'Solo development' },
+      { label: 'Built with', value: 'Claude Code · Claude Design · Expo · React Native' },
       { label: 'Platform', value: 'iOS · Android · web' },
       { label: 'Year', value: '2026' },
     ],
@@ -89,7 +91,7 @@ export const projects: Project[] = [
       'A desk calculator that prints: every result feeds out on a paper tape you can scroll back through, so the history of a calculation is right there instead of lost when you clear the display.',
     build:
       'One Expo and React Native codebase runs on iOS, Android and the web. The calculator logic is covered by Jest tests, and every push to main runs those tests and publishes the web demo you can try here, limited to 10 calculations or one minute.',
-    learned: '[One or two product lessons from taking a mobile app from prototype to TestFlight.]',
+    learned: '[One or two product lessons from taking a mobile app from prototype to the App Store.]',
   },
   {
     slug: 'build-pipeline',
