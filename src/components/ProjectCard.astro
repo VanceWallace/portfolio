@@ -28,7 +28,9 @@ const num = String(index + 1).padStart(2, '0');
     <h3><a href={href}>{project.title}</a></h3>
     <p>{project.summary}</p>
     <div class="card-links">
-      {project.links.map((l) => <a class="tap" href={l.href}>{l.label} ↗</a>)}
+      {project.links.map((l) => l.badge
+        ? <a class="store-badge" href={l.href}><img src={l.badge} alt={l.label} height="40" /></a>
+        : <a class="tap" href={l.href}>{l.label} ↗</a>)}
     </div>
   </div>
 </article>

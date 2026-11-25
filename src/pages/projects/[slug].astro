@@ -16,7 +16,7 @@ const num = String(index + 1).padStart(2, '0');
 const pos = pageProjects.findIndex((p) => p.slug === project.slug);
 const next = pageProjects[(pos + 1) % pageProjects.length];
 const nextNum = String(projects.findIndex((p) => p.slug === next.slug) + 1).padStart(2, '0');
-const playLink = project.links[0];
+const playLink = project.links.find((l) => !l.badge);
 ---
 <Base title={`${project.title} — Vance Wallace`} description={project.summary}>
   <section class="wrap project-head">
@@ -59,7 +59,9 @@ const playLink = project.links[0];
 
   <section class="wrap">
     <div class="link-row">
-      {project.links.map((l) => <a class="tap" href={l.href}>{l.label} ↗</a>)}
+      {project.links.map((l) => l.badge
+        ? <a class="store-badge" href={l.href}><img src={l.badge} alt={l.label} height="40" /></a>
+        : <a class="tap" href={l.href}>{l.label} ↗</a>)}
     </div>
     <nav class="pager" aria-label="Projects">
       <a class="tap" href="/#projects">← All projects</a>

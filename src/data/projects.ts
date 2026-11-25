@@ -5,6 +5,8 @@
 export interface ProjectLink {
   label: string;
   href: string;
+  /** Path under /public to an official store badge image. Renders the badge instead of a text link. */
+  badge?: string;
 }
 
 export interface Project {

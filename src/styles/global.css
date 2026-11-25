@@ -46,6 +46,8 @@ img { max-width: 100%; display: block; }
 }
 
 .tap { min-height: 44px; display: inline-flex; align-items: center; }
+.store-badge { min-height: 44px; display: inline-flex; align-items: center; }
+.store-badge img { height: 40px; width: auto; display: block; }
 
 /* Header */
 .site-header {
@@ -94,7 +96,7 @@ img { max-width: 100%; display: block; }
 .card-meta { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 12px; text-transform: uppercase; }
 .card h3 { margin: 0; font-weight: 400; font-size: 28px; letter-spacing: -0.015em; }
 .card p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body); }
-.card-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: auto; padding-top: 12px; font-size: 15px; }
+.card-links { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: auto; padding-top: 12px; font-size: 15px; }
 .card-links a:first-child { color: var(--accent); }
 
 /* Work with me */
@@ -135,7 +137,7 @@ img { max-width: 100%; display: block; }
 .notes-inner { padding-top: 72px; padding-bottom: 72px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 48px; }
 .notes h2 { margin: 0 0 14px; font-weight: 500; font-size: 13px; font-family: var(--mono); letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; }
 .notes p { margin: 0; font-size: 17px; line-height: 1.7; color: var(--body); }
-.link-row { display: flex; flex-wrap: wrap; gap: 32px; padding: 28px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 16px; }
+.link-row { display: flex; flex-wrap: wrap; align-items: center; gap: 32px; padding: 28px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 16px; }
 .link-row a:first-child { color: var(--accent); }
 .pager { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; padding-top: 48px; padding-bottom: 96px; }
 .pager .next { display: flex; flex-direction: column; gap: 6px; text-align: right; }
