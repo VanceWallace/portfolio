@@ -15,6 +15,13 @@
         <div><span class="label">Experience</span><span>~20 years</span></div>
         <div><span class="label">Based in</span><span>Bethesda, MD</span></div>
         <div><span class="label">Education</span><span>Master's · CMU ETC</span></div>
+        <div class="cert">
+          <span class="label">Certification</span>
+          <a href="https://www.credly.com/badges/ae7257d8-f747-4dac-87dc-4fa890839e3a" target="_blank" rel="noopener">
+            <img src="/badges/claude-certified-architect.png" alt="" width="48" height="48" />
+            <span>Claude Certified Architect · Foundations ↗</span>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -22,4 +29,8 @@
 
 <style>
   .about .eyebrow::before { display: none; }
+  .facts .cert { grid-column: 1 / -1; }
+  .cert a { display: flex; align-items: center; gap: 12px; min-height: 44px; color: var(--ink); }
+  .cert img { width: 48px; height: 48px; flex: none; }
+  .cert a:hover span { color: var(--accent); }
 </style>
