@@ -96,6 +96,29 @@ export const projects: Project[] = [
     learned: '[One or two product lessons from taking a mobile app from prototype to the App Store.]',
   },
   {
+    slug: 'pocket-gizmos',
+    category: 'Prompt-based development',
+    status: '1,500+ views in week one',
+    title: 'Pocket gizmos',
+    summary:
+      "Small interactive gizmos published on Meta's Pocket, built entirely by prompting: the platform has no code editor or development environment. Over 1,500 views in the first week.",
+    thumbnail: '/projects/pocket-gizmos.jpg',
+    thumbnailVideo: '/projects/pocket-gizmos.mp4',
+    thumbnailLabel: '[GIZMO LOOP]',
+    links: [{ label: 'See the gizmos', href: 'https://madewithpocket.com/djbunnyboy' }],
+    meta: [
+      { label: 'Status', value: '1,500+ views in week one' },
+      { label: 'Built with', value: 'Pocket (prompts only)' },
+      { label: 'Platform', value: 'iPhone · web' },
+      { label: 'Year', value: '2026' },
+    ],
+    idea:
+      'Four small, touchable toys: a Periodic Table Simulation that builds each element from its protons, neutrons and electrons; Rain Lake, a rainy-night pond with sliders for the storm and a slow-motion button; Lazy River Frog, a pixel-art swamp game where you time the tongue to catch flies; and Cat Disco, a dance floor of cats run from a turntable with lights you switch on and off.',
+    build:
+      "Pocket offers no repo, no code editor and no way to run tests, so every gizmo is built purely through prompting: describe the interaction in plain language, try it on the phone, and refine it with follow-up prompts until it feels right.",
+    learned: '[What building without a development environment taught you about directing AI through prompts alone.]',
+  },
+  {
     slug: 'build-pipeline',
     category: 'Tooling',
     status: 'Open source',
