@@ -75,7 +75,7 @@ export const projects: Project[] = [
     thumbnailVideo: '/projects/candacecalc.mp4',
     thumbnailLabel: '[APP LOOP]',
     links: [
-      { label: 'App Store', href: 'https://apps.apple.com/us/app/candacecalc/id6832380859' },
+      { label: 'Download on the App Store', href: 'https://apps.apple.com/us/app/candacecalc/id6832380859', badge: '/badges/app-store.svg' },
       { label: 'Try it', href: 'https://vancewallace.github.io/candace-calc/' },
       { label: 'Source', href: 'https://github.com/VanceWallace/candace-calc' },
     ],
